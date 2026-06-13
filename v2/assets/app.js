@@ -4,12 +4,12 @@
   const tl=document.querySelector('.tubelight');
   if(tl){
     const pill=document.createElement('div');pill.className='pill';tl.appendChild(pill);
-    const move=el=>{if(!el)return;pill.style.left=el.offsetLeft+'px';pill.style.width=el.offsetWidth+'px';};
-    const active=tl.querySelector('a.active')||tl.querySelector('a');
-    requestAnimationFrame(()=>move(active));
-    tl.querySelectorAll('a').forEach(a=>a.addEventListener('mouseenter',()=>move(a)));
-    tl.addEventListener('mouseleave',()=>move(tl.querySelector('a.active')||active));
-    addEventListener('resize',()=>move(tl.querySelector('a.active')||active));
+    const active=tl.querySelector('a.active');
+    const place=el=>{if(!el){pill.classList.remove('show');return;}pill.style.left=el.offsetLeft+'px';pill.style.width=el.offsetWidth+'px';pill.classList.add('show');};
+    requestAnimationFrame(()=>place(active));            // homepage has no active link -> pill hidden until hover
+    tl.querySelectorAll('a').forEach(a=>a.addEventListener('mouseenter',()=>place(a)));
+    tl.addEventListener('mouseleave',()=>place(active));  // return to active, or hide
+    addEventListener('resize',()=>place(active));
   }
   // Magnetize button
   document.querySelectorAll('.magnet').forEach(btn=>{
