@@ -147,7 +147,7 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklab,var(--pap
 .lede::before{content:"// ";color:var(--accent)}
 
 /* ===== MAGNETIZE BUTTON (21st.dev pattern) ===== */
-.magnet{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);
+.magnet{display:inline-flex;align-items:center;gap:12px;background:var(--ink);color:#fff;
   font-weight:500;font-size:var(--f-0);padding:16px 28px;border-radius:40px;cursor:pointer;
   transition:transform .15s ease;will-change:transform}
 .magnet .arr{font-family:var(--mono);transition:transform .25s}
