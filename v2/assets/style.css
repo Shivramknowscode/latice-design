@@ -86,6 +86,36 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklab,var(--pap
 .tubelight .pill{position:absolute;top:5px;height:calc(100% - 10px);background:var(--ink);border-radius:30px;
   opacity:0;transition:left .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1),opacity .25s ease;z-index:0}
 .tubelight .pill.show{opacity:1}
+
+/* ===== GLOW MENU (21st.dev glow-menu, vanilla port) ===== */
+.glow-menu{position:relative;padding:6px;border-radius:18px;
+  background:linear-gradient(to bottom,color-mix(in oklab,var(--paper) 80%,transparent),color-mix(in oklab,var(--paper) 42%,transparent));
+  backdrop-filter:blur(10px) saturate(140%);border:1px solid color-mix(in oklab,var(--line) 75%,transparent);
+  box-shadow:0 8px 28px rgba(40,30,20,.08);overflow:hidden}
+.glow-menu .gm-navglow{position:absolute;inset:-8px;z-index:0;pointer-events:none;opacity:0;transition:opacity .5s cubic-bezier(.4,0,.2,1);
+  background:radial-gradient(circle at 50% 50%,color-mix(in oklab,var(--accent) 16%,transparent),transparent 72%)}
+.glow-menu:hover .gm-navglow{opacity:1}
+.glow-menu ul{display:flex;align-items:center;gap:4px;position:relative;z-index:10;list-style:none;margin:0;padding:0}
+.gm-item{position:relative}
+.gm-item a{display:flex;position:relative;border-radius:12px;perspective:600px;transform-style:preserve-3d}
+.gm-glow{position:absolute;inset:0;z-index:0;border-radius:16px;opacity:0;transform:scale(.8);pointer-events:none;
+  transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1)}
+.gm-item:hover .gm-glow,.gm-item.active .gm-glow{opacity:1;transform:scale(1.55)}
+.gm-item .gm-glow{background:radial-gradient(circle,color-mix(in oklab,var(--accent) 26%,transparent),color-mix(in oklab,var(--accent) 7%,transparent) 50%,transparent 100%)}
+.gm-face{display:flex;align-items:center;gap:8px;padding:8px 16px;position:relative;z-index:10;border-radius:12px;
+  font-family:var(--mono);font-size:var(--f--2);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);
+  transition:color .3s ease;backface-visibility:hidden;white-space:nowrap}
+.gm-front{transform-origin:center bottom;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .45s ease}
+.gm-back{position:absolute;inset:0;transform-origin:center top;transform:rotateX(90deg);opacity:0;
+  transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .45s ease}
+.gm-item:hover .gm-front{transform:rotateX(-90deg);opacity:0}
+.gm-item:hover .gm-back{transform:rotateX(0);opacity:1}
+.gm-item:hover .gm-face,.gm-item.active .gm-face{color:var(--accent)}
+.gm-ic{display:inline-flex;color:var(--ink-2);transition:color .3s ease}
+.gm-ic svg{width:17px;height:17px;display:block}
+.gm-item:hover .gm-ic,.gm-item.active .gm-ic{color:var(--accent)}
+@media(max-width:880px){.glow-menu{display:none}}
+
 .nav-right{display:flex;align-items:center;gap:16px}
 .nav-time{font-family:var(--mono);font-size:var(--f--3);color:var(--ink-3)}
 @media(max-width:880px){.tubelight{display:none}.nav-time{display:none}}
@@ -100,7 +130,10 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklab,var(--pap
 
 /* ===== HERO ===== */
 .hero{padding:clamp(56px,9vw,128px) 0 clamp(40px,6vw,80px);position:relative}
-.eyebrow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-family:var(--mono);font-size:var(--f--2);
+/* feedback: drop the eyebrow strip and the redundant "Index" link (logo = home) */
+.eyebrow{display:none}
+.tubelight a[href$="/v2/"],.foot-grid a[href$="/v2/"],.mobile-nav a[href$="/v2/"]{display:none}
+.eyebrow--off{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-family:var(--mono);font-size:var(--f--2);
   letter-spacing:.04em;color:var(--ink-2);border-top:1px solid var(--ink);border-bottom:1px solid var(--line);
   padding:14px 0;margin-bottom:clamp(28px,5vw,56px)}
 .eyebrow span:last-child{text-align:right}

@@ -1,15 +1,32 @@
 // Latice v2 interactions — adapted from 21st.dev component patterns
 (function(){
-  // Tubelight navbar: moving pill behind active/hovered link
+  // Glow menu nav (21st.dev glow-menu, ported to vanilla): glass pill, per-item
+  // radial glow, nav-wide glow on hover, 3D rotateX label flip. Active = current URL.
   const tl=document.querySelector('.tubelight');
   if(tl){
-    const pill=document.createElement('div');pill.className='pill';tl.appendChild(pill);
-    const active=tl.querySelector('a.active');
-    const place=el=>{if(!el){pill.classList.remove('show');return;}pill.style.left=el.offsetLeft+'px';pill.style.width=el.offsetWidth+'px';pill.classList.add('show');};
-    requestAnimationFrame(()=>place(active));            // homepage has no active link -> pill hidden until hover
-    tl.querySelectorAll('a').forEach(a=>a.addEventListener('mouseenter',()=>place(a)));
-    tl.addEventListener('mouseleave',()=>place(active));  // return to active, or hide
-    addEventListener('resize',()=>place(active));
+    const path=location.pathname.replace(/\/+$/,'');
+    const items=[
+      {label:'Services',href:'/v2/services',icon:'grid',cls:'gm-green'},
+      {label:'About',   href:'/v2/about',   icon:'info',cls:'gm-blue'},
+      {label:'Contact', href:'/v2/contact', icon:'mail',cls:'gm-coral'}
+    ];
+    const icons={
+      grid:'<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
+      info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+      mail:'<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>'
+    };
+    const svg=p=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
+    const nav=document.createElement('nav');
+    nav.className='glow-menu';
+    nav.setAttribute('aria-label','Primary');
+    nav.innerHTML='<span class="gm-navglow" aria-hidden="true"></span><ul>'+items.map(it=>{
+      const face='<span class="gm-ic">'+svg(icons[it.icon])+'</span><span>'+it.label+'</span>';
+      const active=path===it.href?' active':'';
+      return '<li class="gm-item '+it.cls+active+'"><a href="'+it.href+'/"><span class="gm-glow" aria-hidden="true"></span>'+
+        '<span class="gm-face gm-front">'+face+'</span>'+
+        '<span class="gm-face gm-back" aria-hidden="true">'+face+'</span></a></li>';
+    }).join('')+'</ul>';
+    tl.replaceWith(nav);
   }
   // Magnetize button
   document.querySelectorAll('.magnet').forEach(btn=>{
