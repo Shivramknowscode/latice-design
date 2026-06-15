@@ -246,5 +246,3 @@ footer{border-top:1px solid var(--ink);margin-top:clamp(70px,9vw,130px);padding:
 
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
-.preview-flag{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:200;background:var(--ink);color:var(--paper);
-  font-family:var(--mono);font-size:var(--f--3);letter-spacing:.06em;padding:8px 16px;border-radius:30px;opacity:.9}
