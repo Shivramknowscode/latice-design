@@ -64,4 +64,17 @@
     if(hdr){const onScroll=()=>hdr.classList.toggle('solid',scrollY>innerHeight*0.6);
       addEventListener('scroll',onScroll,{passive:true});onScroll();}
   }
+  // About: scroll-narrative active step + progress fill
+  const beats=[...document.querySelectorAll('.beat')];
+  if(beats.length){
+    const rail=[...document.querySelectorAll('.rail li')], fill=document.querySelector('.rail-fill');
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.35});
+    beats.forEach(b=>io.observe(b));
+    const upd=()=>{const mid=innerHeight*0.45;let cur=0;
+      beats.forEach((b,i)=>{if(b.getBoundingClientRect().top<mid)cur=i;});
+      rail.forEach((li,i)=>li.classList.toggle('on',i===cur));
+      if(fill){const f=beats[0].getBoundingClientRect().top,l=beats[beats.length-1].getBoundingClientRect().bottom;
+        fill.style.height=(Math.min(1,Math.max(0,(mid-f)/((l-f)||1)))*100)+'%';}};
+    addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();
+  }
 })();
