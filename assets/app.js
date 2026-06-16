@@ -58,4 +58,10 @@
   // Mobile menu
   const mb=document.querySelector('.menu-btn'),mn=document.querySelector('.mobile-nav');
   if(mb&&mn)mb.addEventListener('click',()=>mn.classList.toggle('open'));
+  // Home: transparent nav over the aurora hero, gain solid background once scrolled past it
+  if(document.body.classList.contains('home')){
+    const hdr=document.querySelector('header');
+    if(hdr){const onScroll=()=>hdr.classList.toggle('solid',scrollY>innerHeight*0.6);
+      addEventListener('scroll',onScroll,{passive:true});onScroll();}
+  }
 })();
