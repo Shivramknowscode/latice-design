@@ -55,9 +55,14 @@
   // Live clock (IST)
   const clk=document.querySelector('.nav-time');
   if(clk){const tick=()=>{const t=new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Kolkata',hour:'2-digit',minute:'2-digit'});clk.textContent='MUMBAI '+t+' IST';};tick();setInterval(tick,15000);}
-  // Mobile menu
+  // Mobile menu (fullscreen overlay + body scroll lock + label swap)
   const mb=document.querySelector('.menu-btn'),mn=document.querySelector('.mobile-nav');
-  if(mb&&mn)mb.addEventListener('click',()=>mn.classList.toggle('open'));
+  if(mb&&mn){
+    const setState=open=>{mn.classList.toggle('open',open);document.body.classList.toggle('menu-open',open);mb.textContent=open?'Close':'Menu';};
+    mb.addEventListener('click',()=>setState(!mn.classList.contains('open')));
+    mn.addEventListener('click',e=>{if(e.target.tagName==='A')setState(false);});
+    addEventListener('keydown',e=>{if(e.key==='Escape'&&mn.classList.contains('open'))setState(false);});
+  }
   // Home: transparent nav over the aurora hero, gain solid background once scrolled past it
   if(document.body.classList.contains('home')){
     const hdr=document.querySelector('header');

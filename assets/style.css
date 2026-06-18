@@ -124,9 +124,16 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklab,var(--pap
 .menu-btn{display:none;font-family:var(--mono);font-size:var(--f--2);text-transform:uppercase;border:1px solid var(--line-2);
   background:none;border-radius:30px;padding:8px 14px;cursor:pointer;color:var(--ink)}
 @media(max-width:880px){.menu-btn{display:block}}
-.mobile-nav{display:none;flex-direction:column;border-bottom:1px solid var(--line);background:var(--paper)}
+/* fullscreen mobile menu overlay. Header has backdrop-filter which creates a containing
+   block for fixed descendants, so use explicit viewport dimensions instead of top/bottom. */
+.mobile-nav{position:fixed;top:64px;left:0;width:100vw;height:calc(100dvh - 64px);z-index:90;display:none;
+  flex-direction:column;justify-content:center;align-items:flex-start;gap:8px;
+  background:var(--paper);padding:0 var(--pad)}
 .mobile-nav.open{display:flex}
-.mobile-nav a{font-family:var(--mono);font-size:var(--f--1);text-transform:uppercase;padding:14px var(--pad);border-top:1px solid var(--line)}
+.mobile-nav a{font-family:'Overused Grotesk',Arial,sans-serif;font-size:clamp(var(--f-7),11vw,var(--f-10));
+  font-weight:700;letter-spacing:-.03em;line-height:1.05;text-transform:none;color:var(--ink);padding:8px 0;border:none}
+.mobile-nav a.active{color:var(--accent)}
+body.menu-open{overflow:hidden}
 
 /* ===== HERO ===== */
 .hero{padding:clamp(56px,9vw,128px) 0 clamp(40px,6vw,80px);position:relative}
@@ -161,8 +168,9 @@ body.home header.solid{background:color-mix(in oklab,var(--paper) 86%,transparen
   padding-top:clamp(72px,11vw,150px);padding-bottom:clamp(28px,5vw,56px);position:relative}
 .ab-intro h1, .fur-intro h1, .text-page h1, .cs-title{
   font-size:clamp(var(--f-8),8vw,var(--f-13));font-weight:700;line-height:.95;letter-spacing:-.04em;text-wrap:balance;max-width:20ch}
-/* Services + Contact: pin hero title to the design spec (74px / 73px line-height) */
-.text-page h1{font-size:74px;line-height:73px}
+/* Services + Contact: cap at the design spec (74px / 73px line-height ≈ ratio .986)
+   while staying responsive. Unitless line-height tracks the font as it scales down. */
+.text-page h1{font-size:clamp(var(--f-8),8vw,74px);line-height:.986}
 .ab-intro h1 .em, .cs-title .em{color:var(--accent)}
 .ab-intro .lede, .fur-intro .lede, .text-page .lede, .cs-intro{
   font-family:var(--mono);font-size:var(--f--1);line-height:1.7;color:var(--ink-2);max-width:52ch;margin-top:24px}
