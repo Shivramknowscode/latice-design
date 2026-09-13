@@ -143,16 +143,20 @@ body.menu-open header,body.home.menu-open header{background:var(--paper);backdro
 .hero-aurora{padding:0;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:#fff}
 .aurora-wrap{position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none}
 .aurora{
-  --bands:repeating-linear-gradient(100deg,#fff 0%,#fff 7%,transparent 10%,transparent 12%,#fff 16%);
+  --bands:repeating-linear-gradient(100deg,#fff 0%,#fff 5%,transparent 10%,transparent 11%,#fff 16%);
   --aurora:repeating-linear-gradient(100deg,#d6492a 10%,#e26a34 15%,#f0a35e 20%,#e8843e 25%,#b83a1f 30%);
-  position:absolute;inset:-10px;background-image:var(--bands),var(--aurora);
-  background-size:300% 200%;background-position:50% 50%,50% 50%;
-  filter:blur(12px) saturate(1.2);opacity:.55;mix-blend-mode:multiply;will-change:transform;
+  position:absolute;inset:-10px;overflow:hidden;background-image:var(--bands),var(--aurora);
+  background-size:300% 200%;background-position:50% 50%,50% 50%;opacity:.6;
   -webkit-mask-image:radial-gradient(ellipse at 100% 0%,#000 10%,transparent 70%);
           mask-image:radial-gradient(ellipse at 100% 0%,#000 10%,transparent 70%)}
-.aurora::after{content:"";position:absolute;inset:0;background-image:var(--bands),var(--aurora);
-  background-size:200% 100%;mix-blend-mode:multiply;animation:aurora 60s linear infinite}
-@keyframes aurora{from{background-position:50% 50%,50% 50%}to{background-position:350% 50%,350% 50%}}
+/* Performance: the drifting layer is a 3x-wide element moved with transform (compositor only).
+   No filter/blend on it: the old blur + multiply + background-position animation forced a
+   full-viewport repaint and re-blur every frame, which stuttered on older GPUs. */
+.aurora::after{content:"";position:absolute;top:0;left:0;height:100%;width:300%;
+  background-image:var(--bands),var(--aurora);background-size:calc(200% / 3) 100%;opacity:.85;
+  will-change:transform;animation:aurora 60s linear infinite alternate}
+@keyframes aurora{from{transform:translateX(0)}to{transform:translateX(-66.667%)}}
+.hero-aurora.offscreen .aurora::after{animation-play-state:paused}
 @media(prefers-reduced-motion:reduce){.aurora::after{animation:none}}
 .hero-aurora .wrap{position:relative;z-index:1;width:100%}
 

@@ -64,6 +64,11 @@
     mn.addEventListener('click',e=>{if(e.target.tagName==='A')setState(false);});
     addEventListener('keydown',e=>{if(e.key==='Escape'&&mn.classList.contains('open'))setState(false);});
   }
+  // Home: pause the aurora drift while the hero is scrolled out of view
+  const hero=document.querySelector('.hero-aurora');
+  if(hero&&'IntersectionObserver' in window){
+    new IntersectionObserver(es=>es.forEach(e=>hero.classList.toggle('offscreen',!e.isIntersecting))).observe(hero);
+  }
   // Home: transparent nav over the aurora hero, gain solid background once scrolled past it
   if(document.body.classList.contains('home')){
     const hdr=document.querySelector('header');
